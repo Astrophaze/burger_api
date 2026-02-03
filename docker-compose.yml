@@ -1,0 +1,72 @@
+services:
+  # Configuration du "service" PHP
+  php:
+    # On construit l'image dans le répertoire courant
+    build: .
+    # On nomme le container qui va en résulter helloworld
+    container_name: burger_api
+    # Association du port 8080 du container au port 80 du serveur apache à l'intérieur
+    ports:
+      - "8080:80"
+    # Définition des répertoires à créer
+    volumes:
+      - ./src:/var/www/html
+      - ./msmtprc:/etc/msmtprc
+    # Déclaration des dépendances aux autres services
+    depends_on:
+      - db
+      - mailpit
+    environment:
+      PHP_IDE_CONFIG: "serverName=docker"
+  # Configuration du "service" db
+  db:
+    # On "tire" l'image de MariaDb version 11
+    image: mariadb:11
+    # L"image de ce service s'appellera mariadb
+    container_name: burger_api_mariadb
+    # On redémarre ce service à chaque démarrage du container principal
+    restart: always
+    # Variables d'environnement : les mots de passes et noms de base !!! Ne pas perdre ces infos
+    environment:
+      MARIADB_ROOT_PASSWORD: root
+      MARIADB_DATABASE: burger_api
+      MARIADB_USER: burger_api_user
+      MARIADB_PASSWORD: root
+    # Ouverture des ports 3306 de chaque côté du conteneur
+    ports:
+      - "3306:3306"
+    # Emplacement dans le conteneur où seront contenues les données
+    volumes:
+      - db_data:/var/lib/mysql
+  # Configuration du "service" phpMyAdmin
+  phpmyadmin:
+    # On "tire" l'image phpMyAdmin
+    image: phpmyadmin/phpmyadmin
+    # On nomme le conteneur phpmyadmin
+    container_name: phpmyadmin
+    # On redémarre ce service à chaque démarrage du container principal
+    restart: always
+    # On fait pointer phpmyadmin sur le port 8081 côté client
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: db
+      PMA_USER: root
+      PMA_PASSWORD: root
+    depends_on:
+      - db
+  
+  # Configuration du "service" mailpit
+  mailpit:
+    # On "tire" l'image de mailpit
+    image: axllent/mailpit
+    container_name: burger_api_mailpit
+    restart: always
+    # Ouverture des ports
+    ports:
+      - "8025:8025" # UI
+      - "1025:1025" # SMTP
+
+volumes:
+  # On crée un volume "db_data" qui va contenir les données de la base de données. C'est vers ce volume qu'on fait pointer le service "db"
+  db_data:
