@@ -50,6 +50,8 @@ Si le token est absent, expiré ou invalide, l'API retournera une erreur `401 Un
 
 Voici la documentation détaillée des endpoints disponibles.
 
+URL de base : `http://localhost:8080`
+
 #### 🔐 Authentification
 
 **`GET /jwt-login.php`**
