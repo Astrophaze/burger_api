@@ -35,18 +35,11 @@ Assurez-vous d'avoir les outils suivants installés sur votre machine :
 
    *La première exécution peut prendre quelques minutes le temps de télécharger les images et d'installer les dépendances.*
 
-3. **Vérifier l'installation**
-
-   Accédez à l'API via votre navigateur:
-   - URL : `http://localhost:8080`
-
-## 🔑 Authentification et Utilisation
-
 L'API est sécurisée par un système de token Bearer.
 
 ### 1. Accéder aux routes protégées
 
-Pour appeler les autres endpoints de l'API qui incluent la sécurité, vous devez inclure ce token dans les Headers de vos requêtes HTTP.
+Pour appeler les endpoints de l'API qui incluent la sécurité, vous devez inclure ce token dans les Headers de vos requêtes HTTP.
 
 - **Header** : `Authorization`
 - **Valeur** : `Bearer <votre_token>`
@@ -98,7 +91,7 @@ Récupère la liste des avis clients.
 
 **`GET /article.php?id_article={id}`**
 
-Récupère la liste des avis clients.
+Récupère un article en particulier.
 *   **Authentification** : Requise (Bearer Token).
 *   **Paramètres** : id_article
 
