@@ -1,8 +1,8 @@
 <?php
 
+include 'includes/jwt-authentification.inc.php';
 use PHPMailer\PHPMailer\PHPMailer;
 
-include 'includes/jwt-authentification.inc.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -14,14 +14,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if($stmt->execute()) {
         echo json_encode(['success' => true]);
-        require_once 'vendor/autoload.php';
 
         $mailer = new PHPMailer();
+        $mailer->isSMTP();
         $mailer->CharSet = 'UTF-8';
         $mailer->Encoding = 'base64';
 
-        $mailer->Host = 'localhost';
-        $mailer->Port = 8025;
+        $mailer->Host = 'mailpit';
+        $mailer->Port = 1025;
         $mailer->SMTPAuth = false;
         $mailer->SMTPSecure = '';
 
@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $mailer->Body = $_POST['nom'] . ' vous a écrit ce message : ' . $_POST['message'];
 
         $mailer->send();
-        } else {
+    } else {
         echo json_encode(['success' => false]);
     }
 }

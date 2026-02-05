@@ -12,7 +12,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 // inclusion des packages installés avec Composeer
 require 'vendor/autoload.php';
 
-use PHPMailer\PHPMailer\PHPMailer;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 // Le token en lui-même, en dur certes mais côté back
